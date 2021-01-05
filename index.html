@@ -9,9 +9,9 @@
     <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <link rel="stylesheet" href="css/util.css" />
-    <link rel="stylesheet" href="css/stilAnja.css" />
-    <link rel="stylesheet" href="css/slika.css" />
+    <link rel="stylesheet" href="css/javna/util.css" />
+    <link rel="stylesheet" href="css/javna/stilAnja.css" />
+    <link rel="stylesheet" href="css/javna/slika.css" />
     <link rel="stylesheet" href="css/ol.css" />
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -23,7 +23,7 @@
       <div class="topnav" id="topNav">
         <span>
           <a href="#" id="logo"><asset:image src="logoZelenilo.png" width="35px" height="35px" /></a>
-          <a id="logoLabel">Katastar zelenih površina - Glavni grad Podgorica</a>
+          <a id="logoLabel">Planska dokumentacija</a>
         </span>
         <div class="dropdownDiv">
           <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i><span class="columnNav">Pan</span></a>
@@ -711,19 +711,18 @@
     <a id="image-download" download="mapa_zelenila.png"></a>
 
     <script type="text/javascript">
-      const citajSlikeUrl = '${g.createLink(controller: 'drvece', action: 'javnaFotografije')}'
-          ,drveceNarodniUrl= '${g.createLink(controller: 'drvece', action: 'drveceNarodniNaziv')}'
-          ,drveceLatinskiUrl= '${g.createLink(controller: 'drvece', action: 'drveceLatinskiNaziv')}'
-          ,zbunjeTackaNarodniUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeTackaNarodniNaziv')}'
-          ,zbunjeTackaLatinskiUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeTackaLatinskiNaziv')}'
-          ,zbunjeLinijaNarodniUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeLinijaNarodniNaziv')}'
-          ,zbunjeLinijaLatinskiUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeLinijaLatinskiNaziv')}'
-      ;
+      const citajSlikeUrl = "urlZaCitanjeFotografija",
+        izbrisiZapisUrl = "urlZaBrisanjeZapisa",
+        sacuvajZapisUrl = "urlZaCuvanjeZapisa",
+        naslovnaStranaUrl = "urlZaCuvanjeZapisa";
     </script>
 
-    <asset:javascript src="zelenilo/javna_util.js" />
-    <asset:javascript src="zelenilo/javna.js" />
-    <asset:javascript src="zelenilo/lejeri.js" />
-    <asset:javascript src="zelenilo/mjerenje.js" />
+    <script src="js/global.js"></script>
+    <script src="js/turf.min.js"></script>
+    <script src="js/ol.js"></script>
+    <script src="js/javna/javna_util.js"></script>
+    <script src="js/javna/javna.js"></script>
+    <script src="js/javna/lejeri.js"></script>
+    <script src="js/javna/mjerenje.js"></script>
   </body>
 </html>
