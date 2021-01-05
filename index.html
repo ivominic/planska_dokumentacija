@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planska dokumentacija</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400&display=swap" rel="stylesheet" />
+    <!-- Add icon library -->
+    <script src="https://kit.fontawesome.com/324033e9e1.js" crossorigin="anonymous"></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" href="css/util.css" />
+    <link rel="stylesheet" href="css/stilAnja.css" />
+    <link rel="stylesheet" href="css/slika.css" />
+    <link rel="stylesheet" href="css/ol.css" />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script src="js/ol.js"></script>
+  </head>
+  <body>
+    <div class="pocetni-div">
+      <div class="topnav" id="topNav">
+        <span>
+          <a href="#" id="logo"><asset:image src="logoZelenilo.png" width="35px" height="35px" /></a>
+          <a id="logoLabel">Katastar zelenih površina - Glavni grad Podgorica</a>
+        </span>
+        <div class="dropdownDiv">
+          <a href="#" class="active tooltip" id="pan" data-tool="Pan"><i class="far fa-hand-paper"></i><span class="columnNav">Pan</span></a>
+          <a href="#" id="atributi" class="tooltip" data-tool="Atributi"><i class="fas fa-info-circle"></i><span class="columnNav">Atributi</span></a>
+          <a href="#" id="marker" class="tooltip" data-tool="Crtanje tačke"><i class="fa fa-map-marker" aria-hidden="true"></i><span class="columnNav">Crtanje tačke</span></a>
+          <a href="#" id="linija" class="tooltip" data-tool="Crtanje linije"><i class="fas fa-route"></i><span class="columnNav">Crtanje linije</span></a>
+          <a href="#" id="poligon" class="tooltip" data-tool="Crtanje poligona"><i class="fas fa-draw-polygon"></i><span class="columnNav">Crtanje poligona</span></a>
+          <a href="#" id="brisanje" class="tooltip" data-tool="Uklanjanje"><i class="fas fa-eraser" aria-hidden="true"></i><span class="columnNav">Uklanjanje</span></a>
+          <a href="#" id="lejeri" class="tooltip" data-tool="Lejeri"><i class="fab fa-buffer" aria-hidden="true"></i><span class="columnNav">Lejeri</span></a>
+          <div class="dropdown">
+            <button class="dropbtn">
+              <div>
+                <i class="fas fa-ruler"></i>
+                <i class="fa fa-caret-down"></i>
+              </div>
+              <span class="columnNav">Mjerenje</span>
+            </button>
+            <div class="dropdown-content">
+              <a href="#" id="mjeraLinija">Mjerenje dužine</a>
+              <a href="#" id="mjeraPoligon">Mjerenje površine</a>
+              %{-- <a href="#" id="mjeraKraj">Završetak mjerenja</a>--}%
+              <a href="#" id="mjeraUklanjanje">Uklanjenje mjerenja</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">
+              <div>
+                <i class="fas fa-question"></i>
+                <i class="fa fa-caret-down"></i>
+              </div>
+              <span class="columnNav">Pomoć</span>
+            </button>
+            <div class="dropdown-content">
+              <a href="${resource(dir:'documents',file:'Uputstvo.pdf')}" id="uputstvo" target="_blank">Uputstvo</a>
+            </div>
+          </div>
+          <a href="#" id="stampanje" class="tooltip" data-tool="Štampanje"><i class="fa fa-print" aria-hidden="true"></i><span class="columnNav">Štampanje</span></a>
+          <a href="#" id="pretraga" class="tooltip" data-tool="Pretraga"><i class="fa fa-search" aria-hidden="true"></i><span class="columnNav">Pretraga</span></a>
+          <a href="#" id="restart" class="tooltip" data-tool="Restart"><i class="fas fa-power-off"></i><span class="columnNav">Restart</span></a>
+          <a href="javascript:void(0);" class="icon" onclick="zatvoriHamburger()">&#9776;</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="map" class="map"></div>
+
+    <div id="atributiDiv" class="sidenav">
+      <div class="titleAndClose">
+        <h1>Atributi</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#atributiDiv')">&times;</a>
+      </div>
+      <div id="accordion" class="collapse-content pb-80"></div>
+    </div>
+
+    <div id="lejeriDiv" class="sidenav">
+      <div class="titleAndClose">
+        <h1>Lejeri</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#lejeriDiv')">&times;</a>
+      </div>
+      <div>
+        <div class="items-padd">
+          <div class="border-bottom pb-16 mb-8">
+            <label class="radiocontainer">
+              Open street map
+              <input type="radio" checked="checked" name="radio" id="radioOsm" />
+              <span class="radiocheckmark"></span>
+            </label>
+            <label class="radiocontainer">
+              Satelit
+              <input type="radio" name="radio" id="radioSatelit" />
+              <span class="radiocheckmark"></span>
+            </label>
+            <label class="radiocontainer">
+              Topo mapa
+              <input type="radio" name="radio" id="radioTopo" />
+              <span class="radiocheckmark"></span>
+            </label>
+            <label class="radiocontainer">
+              Pješačka mapa
+              <input type="radio" name="radio" id="radioHiker" />
+              <span class="radiocheckmark"></span>
+            </label>
+          </div>
+        </div>
+        <div class="items-padd-sm">
+          <div class="checkrow mb-8">
+            <label class="container">
+              Drveće
+              <input type="checkbox" id="chkDrvece" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow mb-8">
+            <label class="container">
+              Žbunje linija
+              <input type="checkbox" id="chkZbunjeLinija" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow mb-8">
+            <label class="container">
+              Žbunje tačka
+              <input type="checkbox" id="chkZbunjeTacka" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow mb-8">
+            <label class="container">
+              Zelene površine
+              <input type="checkbox" id="chkZelenePovrsine" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow mb-8">
+            <label class="container">
+              Urbani mobilijar
+              <input type="checkbox" id="chkUrbaniMobilijar" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow mb-8">
+            <label class="container">
+              Rekreativne površine
+              <input type="checkbox" id="chkRekreativnePovrsine" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow mb-8">
+            <label class="container">
+              Staze
+              <input type="checkbox" id="chkStaze" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="checkrow">
+            <label class="container">
+              Granica zahvata
+              <input type="checkbox" id="chkGranica" checked />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pretragaDiv" class="sidenav">
+      <div class="titleAndClose">
+        <h1>Pretraga</h1>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeDiv('#pretragaDiv')">&times;</a>
+      </div>
+      <div class="items-padd">
+        <div class="flex-row mb-16 pb-16 border-bottom">
+          <div>
+            <label class="container">
+              Udaljenost od tačke (m)
+              <input type="checkbox" id="pretragaTacke" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div>
+            <input type="number" id="pretragaTackeUdaljenost" />
+          </div>
+        </div>
+        <div class="flex-row mb-16 pb-16 border-bottom">
+          <div class="column">
+            <label class="container">
+              Linija presijeca
+              <input type="checkbox" id="pretragaLinije" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+        <div class="mb-16 pb-16 border-bottom">
+          <label class="container mb-8">
+            Poligon obuhvata
+            <input type="checkbox" id="pretragaPoligonObuhvata" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container">
+            Poligon presijeca
+            <input type="checkbox" id="pretragaPoligonPresijeca" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="items-padd">
+        <div class="flex-row bottom-shadow pb-16 mb-16">
+          <label for="ddlLejerPretraga">Lejer za pretragu:</label>
+          <select id="ddlLejerPretraga" class="select-css">
+            <option value="">Svi lejeri</option>
+            <option value="drvece">Drveće</option>
+            <option value="zbunjeLinija">Žbunje linijsko</option>
+            <option value="zbunjeTacka">Žbunje tačkasto</option>
+            <option value="zelenePovrsine">Zelene površine</option>
+            <option value="urbaniMobilijar">Urbani mobilijar</option>
+            <option value="rekreativnePovrsine">Rekreativne površine</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+      <div id="divDrvece" style="display: none">
+        <div class="items-padd-sm">
+          <div class="flex-row pb-8">
+            <label for="pretragaIdObjekta">Id objekta:</label>
+            <input type="number" id="pretragaIdObjekta" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaTip">Tip objekta:</label>
+            <select id="pretragaTip" class="select-css">
+              <option value=""></option>
+              <option value="Četinar">Četinar</option>
+              <option value="Listopadni lišćar">Listopadni lišćar</option>
+              <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+              <option value="Palme">Palme</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaNarodniNaziv">Narodni naziv:</label>
+            <select id="pretragaNarodniNaziv" class="select-css">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaLatinskiNaziv">Latinski naziv:</label>
+            <select id="pretragaLatinskiNaziv" class="select-css">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVisinaStablaOd">Visina stabla (m):</label>
+            <div style="display: inline-flex">
+              <input type="number" class="mr-8" min="-999" max="9999" id="pretragaVisinaStablaOd" placeholder="Od" />
+              <input type="number" min="-999" max="9999" id="pretragaVisinaStablaDo" placeholder="Do" />
+            </div>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVisinaDeblaOd">Visina debla (m):</label>
+            <div style="display: inline-flex">
+              <input type="number" class="mr-8" min="-999" max="9999" id="pretragaVisinaDeblaOd" placeholder="Od" />
+              <input type="number" min="-999" max="9999" id="pretragaVisinaDeblaDo" placeholder="Do" />
+            </div>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaPrsniPrecnikOd">Prsni prečnik (cm):</label>
+            <div style="display: inline-flex">
+              <input type="number" class="mr-8" min="-999" max="9999" id="pretragaPrsniPrecnikOd" placeholder="Od" />
+              <input type="number" min="-999" max="9999" id="pretragaPrsniPrecnikDo" placeholder="Do" />
+            </div>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaSirinaKrosnjeOd">Širina krošnje (m):</label>
+            <div style="display: inline-flex">
+              <input type="number" class="mr-8" min="-999" max="9999" id="pretragaSirinaKrosnjeOd" placeholder="Od" />
+              <input type="number" min="-999" max="9999" id="pretragaSirinaKrosnjeDo" placeholder="Do" />
+            </div>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaTipKragne">Tip kragne:</label>
+            <input type="text" id="pretragaTipKragne" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaNapomena">Napomena:</label>
+            <input type="text" class="form-control" id="pretragaNapomena" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaFitopatoloskePromjene">Fitopatološke promjene:</label>
+            <input type="text" id="pretragaFitopatoloskePromjene" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVrstaFitopatoloskePromjene">Vrsta fp promjene:</label>
+            <input type="text" id="pretragaVrstaFitopatoloskePromjene" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaEntomoloskePromjene">Entomološke promjene:</label>
+            <input type="text" id="pretragaEntomoloskePromjene" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVrstaEntomoloskePromjene">Vrsta em promjene:</label>
+            <input type="text" id="pretragaVrstaEntomoloskePromjene" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaIzrazenostOtvoreneTruleziDebla">Izražena trulež debla:</label>
+            <select class="select-css" id="pretragaIzrazenostOtvoreneTruleziDebla">
+              <option value=""></option>
+              <option value="Izražena">Izražena</option>
+              <option value="Malo prisutna">Malo prisutna</option>
+              <option value="Nema">Nema</option>
+              <option value="Vrlo prisutna">Vrlo prisutna</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVelicinaOtvoreneTruleziDebla">Veličina truleži debla:</label>
+            <select class="select-css" id="pretragaVelicinaOtvoreneTruleziDebla">
+              <option value=""></option>
+              <option value="Do 10cm">Do 10cm</option>
+              <option value="Preko 10cm">Preko 10cm</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaIzrazenostOtvoreneTruleziGrana">Izražena trulež grana:</label>
+            <select class="select-css" id="pretragaIzrazenostOtvoreneTruleziGrana">
+              <option value=""></option>
+              <option value="Izražena">Izražena</option>
+              <option value="Malo prisutna">Malo prisutna</option>
+              <option value="Nema">Nema</option>
+              <option value="Vrlo prisutna">Vrlo prisutna</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVelicinaOtvoreneTruleziGrana">Veličina truleži grana:</label>
+            <select class="select-css" id="pretragaVelicinaOtvoreneTruleziGrana">
+              <option value=""></option>
+              <option value="Do 10cm">Do 10cm</option>
+              <option value="Preko 10cm">Preko 10cm</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaOcjenaVitalnosti">Ocjena vitalnosti:</label>
+            <select class="select-css" id="pretragaOcjenaVitalnosti">
+              <option value=""></option>
+              <option value="1 Loše">1 Loše</option>
+              <option value="2 Dovoljno">2 Dovoljno</option>
+              <option value="3 Dobro">3 Dobro</option>
+              <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+              <option value="5 Odlično">5 Odlično</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaOcjenaDekorativnosti">Ocjena dekorativnosti:</label>
+            <select class="select-css" id="pretragaOcjenaDekorativnosti">
+              <option value=""></option>
+              <option value="1 Loše">1 Loše</option>
+              <option value="2 Dovoljno">2 Dovoljno</option>
+              <option value="3 Dobro">3 Dobro</option>
+              <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+              <option value="5 Odlično">5 Odlično</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaOpsegStarosti">Opseg starosti:</label>
+            <select class="select-css" id="pretragaOpsegStarosti">
+              <option value=""></option>
+              <option value="10g - 30g">10g - 30g</option>
+              <option value="Mlađe od 10g">Mlađe od 10g</option>
+              <option value="Starije od 30g">Starije od 30g</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaOcekivanoTrajanjeZivotaOd">Životni vijek (godina):</label>
+            <div style="display: inline-flex">
+              <input type="number" class="mr-8" min="-999" max="9999" id="pretragaOcekivanoTrajanjeZivotaOd" placeholder="Od" />
+              <input type="number" min="-999" max="9999" id="pretragaOcekivanoTrajanjeZivotaDo" placeholder="Do" />
+            </div>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaCijenaSadniceOd">Procijenjena vrijednost (€):</label>
+            <div style="display: inline-flex">
+              <input type="number" class="mr-8" min="-999" max="9999" id="pretragaCijenaSadniceOd" placeholder="Od" />
+              <input type="number" min="-999" max="9999" id="pretragaCijenaSadniceDo" placeholder="Do" />
+            </div>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaVrijemeSadnje">Vrijeme sadnje:</label>
+            <input type="text" id="pretragaVrijemeSadnje" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaOstaliDetalji">Ostali detalji:</label>
+            <input type="text" id="pretragaOstaliDetalji" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaSlomljeneGrane">Slomljene grane:</label>
+            <select class="select-css" id="pretragaSlomljeneGrane">
+              <option value=""></option>
+              <option value="da">Da</option>
+              <option value="ne">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaSuveGrane">Suve grane:</label>
+            <select class="select-css" id="pretragaSuveGrane">
+              <option value=""></option>
+              <option value="da">Da</option>
+              <option value="ne">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaSuhovrhost">Suhovrhost:</label>
+            <select class="select-css" id="pretragaSuhovrhost">
+              <option value=""></option>
+              <option value="da">Da</option>
+              <option value="ne">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaKvalitet">Za uklanjanje:</label>
+            <select class="select-css" id="pretragaKvalitet">
+              <option value=""></option>
+              <option value="da">Da</option>
+              <option value="ne">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaIsjeceneDebeleGrane">Isječene debele grane:</label>
+            <select class="select-css" id="pretragaIsjeceneDebeleGrane">
+              <option value=""></option>
+              <option value="true">Da</option>
+              <option value="false">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaPremazivanjeNakonSjece">Premazivanje nakon sječe:</label>
+            <select class="select-css" id="pretragaPremazivanjeNakonSjece">
+              <option value=""></option>
+              <option value="true">Da</option>
+              <option value="false">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaIsjecenoUklonjenoStablo">Isječeno stablo:</label>
+            <select class="select-css" id="pretragaIsjecenoUklonjenoStablo">
+              <option value=""></option>
+              <option value="true">Da</option>
+              <option value="false">Ne</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaPripadnostDrvoredu">Pripadnost drvoredu:</label>
+            <select class="select-css" id="pretragaPripadnostDrvoredu">
+              <option value=""></option>
+              <option value="true">Da</option>
+              <option value="false">Ne</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="divZbunjeLinija" style="display: none">
+        <div class="items-padd-sm">
+          <div class="flex-row pb-8">
+            <label for="pretragaZLIdObjekta">Id objekta:</label>
+            <input type="text" id="pretragaZLIdObjekta" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZLTip">Tip objekta:</label>
+            <select id="pretragaZLTip" class="select-css">
+              <option value=""></option>
+              <option value="Četinar">Četinar</option>
+              <option value="Listopadni lišćar">Listopadni lišćar</option>
+              <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZLLatinskiNaziv">Latinski naziv:</label>
+            <select id="pretragaZLLatinskiNaziv" class="select-css">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZLNarodniNaziv">Narodni naziv:</label>
+            <select id="pretragaZLNarodniNaziv" class="select-css">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZLZdravstvenoStanje">Zdravstveno stanje:</label>
+            <select class="select-css" id="pretragaZLZdravstvenoStanje">
+              <option value=""></option>
+              <option value="1 Loše">1 Loše</option>
+              <option value="2 Dovoljno">2 Dovoljno</option>
+              <option value="3 Dobro">3 Dobro</option>
+              <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+              <option value="5 Odlično">5 Odlično</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZLNapomena">Napomena:</label>
+            <input type="text" class="form-control" id="pretragaZLNapomena" />
+          </div>
+        </div>
+      </div>
+
+      <div id="divZbunjeTacka" style="display: none">
+        <div class="items-padd-sm">
+          <div class="flex-row pb-8">
+            <label for="pretragaZTIdObjekta">Id objekta:</label>
+            <input type="text" id="pretragaZTIdObjekta" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZTTip">Tip objekta:</label>
+            <select id="pretragaZTTip" class="select-css">
+              <option value=""></option>
+              <option value="Četinar">Četinar</option>
+              <option value="Listopadni lišćar">Listopadni lišćar</option>
+              <option value="Zimzeleni lišćar">Zimzeleni lišćar</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZTLatinskiNaziv">Latinski naziv:</label>
+            <select id="pretragaZTLatinskiNaziv" class="select-css">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZTNarodniNaziv">Narodni naziv:</label>
+            <select id="pretragaZTNarodniNaziv" class="select-css">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZTZdravstvenoStanje">Zdravstveno stanje:</label>
+            <select class="select-css" id="pretragaZTZdravstvenoStanje">
+              <option value=""></option>
+              <option value="1 Loše">1 Loše</option>
+              <option value="2 Dovoljno">2 Dovoljno</option>
+              <option value="3 Dobro">3 Dobro</option>
+              <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+              <option value="5 Odlično">5 Odlično</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZTNapomena">Napomena:</label>
+            <input type="text" class="form-control" id="pretragaZTNapomena" />
+          </div>
+        </div>
+      </div>
+
+      <div id="divZelenePovrsine" style="display: none">
+        <div class="items-padd-sm">
+          <div class="flex-row pb-8">
+            <label for="pretragaZPIdObjekta">Id objekta:</label>
+            <input type="number" id="pretragaZPIdObjekta" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZPTip">Tip objekta:</label>
+            <select id="pretragaZPTip" class="select-css">
+              <option value=""></option>
+              <option value="Parkovska">Parkovska</option>
+              <option value="Ostrvo">Ostrvo</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZPNamjena">Namjena:</label>
+            <input type="text" id="pretragaZPNamjena" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaZPOpis">Opis:</label>
+            <input type="text" id="pretragaZPOpis" />
+          </div>
+        </div>
+      </div>
+
+      <div id="divUrbaniMobilijar" style="display: none">
+        <div class="items-padd-sm">
+          <div class="flex-row pb-8">
+            <label for="pretragaUMIdObjekta">Id objekta:</label>
+            <input type="number" id="pretragaUMIdObjekta" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaUMTip">Tip objekta:</label>
+            <select id="pretragaUMTip" class="select-css">
+              <option value=""></option>
+              <option value="Bilbord">Bilbord</option>
+              <option value="Česma">Česma</option>
+              <option value="Fontana">Fontana</option>
+              <option value="Hidrant">Hidrant</option>
+              <option value="Javni toalet">Javni toalet</option>
+              <option value="Korpa za otpatke">Korpa za otpatke</option>
+              <option value="Klupa">Klupa</option>
+              <option value="Parkovska rasvjeta">Parkovska rasvjeta</option>
+              <option value="Spomenik">Spomenik</option>
+              <option value="Žardinjera">Žardinjera</option>
+              <option value="Mobilijar">Mobilijar</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaUMMaterijal">Materijal:</label>
+            <input type="text" id="pretragaUMMaterijal" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaUMBoja">Boja:</label>
+            <input type="text" id="pretragaUMBoja" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaUMStanje">Stanje:</label>
+            <select class="select-css" id="pretragaUMStanje">
+              <option value=""></option>
+              <option value="1 Loše">1 Loše</option>
+              <option value="2 Dovoljno">2 Dovoljno</option>
+              <option value="3 Dobro">3 Dobro</option>
+              <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+              <option value="5 Odlično">5 Odlično</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaUMNapomena">Napomena:</label>
+            <input type="text" id="pretragaUMNapomena" />
+          </div>
+        </div>
+      </div>
+
+      <div id="divRekreativnePovrsine" style="display: none">
+        <div class="items-padd-sm">
+          <div class="flex-row pb-8">
+            <label for="pretragaRPIdObjekta">Id objekta:</label>
+            <input type="number" id="pretragaRPIdObjekta" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaRPTip">Tip objekta:</label>
+            <select id="pretragaRPTip" class="select-css">
+              <option value=""></option>
+              <option value="Igralište">Igralište</option>
+              <option value="Sportski teren">Sportski teren</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaRPMaterijal">Materijal:</label>
+            <input type="text" id="pretragaRPMaterijal" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaRPBoja">Boja:</label>
+            <input type="text" id="pretragaRPBoja" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaRPStanje">Zdravstveno stanje:</label>
+            <select class="select-css" id="pretragaRPStanje">
+              <option value=""></option>
+              <option value="1 Loše">1 Loše</option>
+              <option value="2 Dovoljno">2 Dovoljno</option>
+              <option value="3 Dobro">3 Dobro</option>
+              <option value="4 Vrlo dobro">4 Vrlo dobro</option>
+              <option value="5 Odlično">5 Odlično</option>
+            </select>
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaRPDimenzije">Dimenzije:</label>
+            <input type="text" class="form-control" id="pretragaRPDimenzije" />
+          </div>
+          <div class="flex-row pb-8">
+            <label for="pretragaRPNapomena">Napomena:</label>
+            <input type="text" class="form-control" id="pretragaRPNapomena" />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex-end items-padd-sm pb-160">
+        <button type="button" class="btn" id="btnFilter"><i class="fas fa-search"></i> Filtriranje</button>
+      </div>
+    </div>
+
+    <!-- Modalna fotografija -->
+    <div id="modalFotografija" class="modal">
+      <span id="zatvoriModalFotografija" class="close">&times;</span>
+      <img class="modal-content" id="imgModal" alt="Nema fotografije" />
+      <div id="naslovFotografija"></div>
+      <a class="prev" onclick="prikaziSliku(-1)">&#10094;</a>
+      <a class="next" onclick="prikaziSliku(1)">&#10095;</a>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <!-- Modal confirm-->
+    <div id="modalConfirm" class="modal">
+      <span onclick="confirmOdustani" class="close" title="Close Modal">&times;</span>
+      <div class="confirm-modal-content confirm-container">
+        <h2 id="modalConfirmHeader"></h2>
+        <h4 id="modalConfirmText"></h4>
+
+        <div class="confirm-clearfix">
+          <button type="button" class="confirmbtn confirm-cancelbtn" id="confirmOdustani">Odustani</button>
+          <button type="button" class="confirmbtn confirm-deletebtn" id="confirmPotvrdi">Potvrdi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal spinner za ajax request-->
+    <div id="fadeSpinner"></div>
+    <div id="modalSpinner">
+      <asset:image src="loading.gif" alt="Loading..." />
+    </div>
+    <div class="razmjera" id="razmjera"></div>
+    <div class="koordinate" id="koordinate"></div>
+    <a id="image-download" download="mapa_zelenila.png"></a>
+
+    <script type="text/javascript">
+      const citajSlikeUrl = '${g.createLink(controller: 'drvece', action: 'javnaFotografije')}'
+          ,drveceNarodniUrl= '${g.createLink(controller: 'drvece', action: 'drveceNarodniNaziv')}'
+          ,drveceLatinskiUrl= '${g.createLink(controller: 'drvece', action: 'drveceLatinskiNaziv')}'
+          ,zbunjeTackaNarodniUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeTackaNarodniNaziv')}'
+          ,zbunjeTackaLatinskiUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeTackaLatinskiNaziv')}'
+          ,zbunjeLinijaNarodniUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeLinijaNarodniNaziv')}'
+          ,zbunjeLinijaLatinskiUrl= '${g.createLink(controller: 'drvece', action: 'zbunjeLinijaLatinskiNaziv')}'
+      ;
+    </script>
+
+    <asset:javascript src="zelenilo/javna_util.js" />
+    <asset:javascript src="zelenilo/javna.js" />
+    <asset:javascript src="zelenilo/lejeri.js" />
+    <asset:javascript src="zelenilo/mjerenje.js" />
+  </body>
+</html>

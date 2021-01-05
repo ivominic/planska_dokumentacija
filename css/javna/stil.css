@@ -1,0 +1,661 @@
+/** Stil za select/ddl*/
+.select-css {
+  height: 25px;
+  width: 90%;
+  display: block;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.42857143;
+  color: #f2f2f2;
+  background-color: #777777;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+}
+
+/** Stil za sva input polja*/
+input[type] {
+  width: 90%;
+  display: block;
+  float: left;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.42857143;
+  color: #f2f2f2;
+  background-color: #777777;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+}
+
+/** Podijeljena stranica na dvije kolone*/
+.column {
+  float: left;
+  width: 50%;
+}
+
+/** Za samo jednu kontrolu u dvije kolone*/
+.sama {
+  float: left;
+  width: 95% !important;
+  position: relative;
+  top: 20px;
+}
+
+/**Spajanje kontrola u dvije kolone*/
+.spojena {
+  float: left;
+  width: 100% !important;
+}
+
+.row {
+  height: 34px;
+  padding: 12px 12px;
+}
+
+/* Briše floats-e */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.btn {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  background-color: #414b56;
+  text-align: center;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Chivo', sans-serif;
+  color: #f2f2f2;
+  background: #414b56;
+  /*display: flex;
+  flex-direction: column;*/
+}
+
+.pocetni-div {
+  height: 50px;
+}
+
+.odvojeno {
+  margin-top: 10px;
+  padding: 16px, 12px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+.koordinate {
+  width: 200px;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1;
+  /*background: #f2f2f2;*/
+  color: #414b56;
+  font-size: small;
+}
+
+.razmjera {
+  width: 200px;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  z-index: 1;
+  /*background: #f2f2f2;*/
+  color: #414b56;
+  font-size: small;
+}
+
+/* Definisanje boje navbara */
+.topnav {
+  background-color: #414b56;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 26px;
+  text-align: center;
+  line-height: 26px;
+}
+
+/*.topnav button {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  background-color: #414b56;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 25px;
+}*/
+
+.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Ne prikazuje hamburger na desnoj strani, koji se pojavljuje na malim ekranima */
+.topnav .icon {
+  display: none;
+}
+
+/* Dropdown container - potrebno za pozicioniranje sadržaja/content-a */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+/* Stilizacija dropdown content-a, skriven defaultno */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Linkovi unutar kontenta */
+.dropdown-content a {
+  font-size: 14px;
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Pozadina ikonica na mouse hover */
+.topnav a:hover,
+.dropdown:hover .dropbtn {
+  background-color: #777;
+  color: white;
+}
+
+/* Siva pozadina na hover contenta */
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Prikaz dropdown sadržaja na hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Na ekranima manjim od 600px skriva sve ikonice osim prve i prikazuje hamburger (icon) */
+@media screen and (max-width: 600px) {
+
+  .topnav a:not(:first-child),
+  .dropdown .dropbtn {
+    display: none;
+  }
+
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+/* Dodaje responsive klasu topnav-u javascriptom kad se klikne hamburger. Prikazuje linkove vertikalno */
+@media screen and (max-width: 600px) {
+  .topnav.responsive {
+    position: relative;
+    z-index: 15;
+  }
+
+  .topnav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+    z-index: 15;
+  }
+
+  .topnav.responsive .dropdown {
+    float: none;
+  }
+
+  .topnav.responsive .dropdown-content {
+    position: relative;
+  }
+
+  .topnav.responsive .dropdown .dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+
+
+/******* SIDEBAR*/
+.sidenav {
+  height: 100%;
+  width: 0;
+  /* 0 width - ovo se podešava javascriptom */
+  position: fixed;
+  z-index: 1;
+  top: 50px;
+  /* prikazuje se na vrhu, gore, a sljedeći parametar postavlja lijevo*/
+  left: 0;
+  background-color: #414b56;
+  color: #f2f2f2;
+  overflow-x: hidden;
+  /* uklanja horizontalni skrol*/
+  padding-top: 60px;
+  /* Kreće da popunjava sadržaj 60px od vrha */
+  transition: 0.3s;
+}
+
+.sidenav h1 {
+  position: absolute;
+  top: 0;
+  padding-left: 10px;
+}
+
+/* Linkovi - potrebno zbog X za zatvaranje */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* Pomjera sadržaj 20px u desno */
+#main {
+  transition: margin-left .3s;
+  padding: 20px;
+}
+
+/*@media screen and (max-height: 600px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
+}*/
+
+
+/** TOOLTIP */
+
+
+/** tooltip styles
+  * based on http://www.flatypo.net/tutorials/how-to-create-animated-tooltips-css3-hiperlink/ 
+ **/
+a.tooltip {
+  position: relative;
+  display: inline;
+}
+
+a.tooltip:after {
+  top: 30%;
+  position: absolute;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 15px;
+  white-space: nowrap;
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  content: attr(data-tool);
+  /* might also use attr(title) */
+  height: 25px;
+  min-width: 100px;
+  z-index: 999;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+a.tooltip:before {
+  position: absolute;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  left: 50%;
+  bottom: 0px;
+  opacity: 0;
+  content: "";
+  border-style: solid;
+  border-width: 6px 6px 0 6px;
+  border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+}
+
+a.tooltip:hover:after {
+  visibility: visible;
+  opacity: 1;
+  bottom: 20px;
+}
+
+a.tooltip:hover:before {
+  visibility: visible;
+  opacity: 1;
+  bottom: 14px;
+}
+
+a.tooltip.animate:after,
+a.tooltip.animate:before {
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+
+/* tips on bottom */
+a.tooltip.bottom:after {
+  bottom: auto;
+  top: 0;
+}
+
+a.tooltip.bottom:hover:after {
+  top: 28px;
+}
+
+a.tooltip.bottom:before {
+  border-width: 0 5px 8.7px 5px;
+  border-color: transparent transparent rgba(0, 0, 0, 0.85) transparent;
+  top: 0px
+}
+
+a.tooltip.bottom:hover:before {
+  top: 20px;
+}
+
+
+/* tips on the right */
+a.tooltip.right:after {
+  left: 100%;
+  bottom: -45%;
+}
+
+a.tooltip.right:hover:after {
+  left: 110%;
+  bottom: -45%;
+}
+
+a.tooltip.right:before {
+  border-width: 5px 10px 5px 0;
+  border-color: transparent rgba(0, 0, 0, 0.85) transparent transparent;
+  left: 90%;
+  bottom: 2%;
+}
+
+a.tooltip.right:hover:before {
+  left: 100%;
+  bottom: 2%;
+}
+
+
+/* tips on the left */
+a.tooltip.left:after {
+  left: auto;
+  right: 100%;
+  bottom: -45%;
+}
+
+a.tooltip.left:hover:after {
+  right: 110%;
+  bottom: -45%;
+}
+
+a.tooltip.left:before {
+  border-width: 5px 0 5px 10px;
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.85);
+  left: auto;
+  right: 90%;
+  bottom: 2%;
+}
+
+a.tooltip.left:hover:before {
+  right: 100%;
+  bottom: 2%;
+}
+
+
+/* tooltip colors (add your own!) */
+a.tooltip.blue:after {
+  background: #5f87c2;
+}
+
+a.tooltip.blue:before {
+  border-color: #5f87c2 transparent transparent transparent;
+}
+
+a.tooltip.bottom.blue:before {
+  border-color: transparent transparent #5f87c2 transparent;
+}
+
+a.tooltip.right.blue:before {
+  border-color: transparent #5f87c2 transparent transparent;
+}
+
+a.tooltip.left.blue:before {
+  border-color: transparent transparent transparent #5f87c2;
+}
+
+
+
+/* input field tooltips */
+input+.fieldtip {
+  visibility: hidden;
+  position: relative;
+  bottom: 0;
+  left: 15px;
+  opacity: 0;
+  content: attr(data-tool);
+  height: auto;
+  min-width: 100px;
+  padding: 5px 8px;
+  z-index: 9999;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.85);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+input+.fieldtip:after {
+  display: block;
+  position: absolute;
+  visibility: hidden;
+  content: '';
+  width: 0;
+  height: 0;
+  top: 8px;
+  left: -8px;
+  border-style: solid;
+  border-width: 4px 8px 4px 0;
+  border-color: transparent rgba(0, 0, 0, 0.75) transparent transparent;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus+.fieldtip,
+input:focus+.fieldtip:after {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/** clearfix **/
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.clearfix {
+  display: inline-block;
+}
+
+html[xmlns] .clearfix {
+  display: block;
+}
+
+* html .clearfix {
+  height: 1%;
+}
+
+
+/** CHECKBOX-OVI*/
+
+/* Kontejner */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Skriva defaultni checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Kreira custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #777777;
+}
+
+/* Na mouse hover daje sivu pozadinu checkbox-a */
+.container:hover input~.checkmark {
+  background-color: #ccc;
+}
+
+/* Čekiranom daje zelenu pozadinu */
+.container input:checked~.checkmark {
+  /*background-color: #2196F3;*/
+  background-color: #4CAF50;
+}
+
+/* Skriva štrik kad nije čekirano */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Inače ga prikazuje */
+.container input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Stilizacija štrika */
+.container .checkmark:after {
+  left: 3px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
